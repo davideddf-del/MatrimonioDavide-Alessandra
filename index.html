@@ -1,0 +1,931 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Davide & Alessandra — Matrimonio</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#f2efe7;
+      --ink:#2b2b2b;
+      --muted:rgba(0,0,0,.55);
+      --line:rgba(0,0,0,.18);
+      --line2:rgba(0,0,0,.12);
+
+      --accent:#1b2b4a;
+      --accentSoft:rgba(27,43,74,.10);
+
+      --radius:14px;
+      --shadow:0 18px 45px rgba(0,0,0,.12);
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--ink);
+      font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, sans-serif;
+      overflow-x:hidden;
+    }
+
+    /* ===== MAIN WRAP ===== */
+    .wrap{
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 18px 16px 70px;
+      opacity:0;
+      transform: translateY(10px);
+      transition: opacity .55s ease, transform .55s ease;
+    }
+    .wrap.show{ opacity:1; transform: translateY(0); }
+
+    /* ===== Header ===== */
+    .titleBlock{ text-align:center; margin-top: 10px; }
+    .names{
+      font-family: Allura, cursive;
+      font-size: 56px;
+      line-height: 1;
+      margin: 0;
+      color: rgba(0,0,0,.68);
+    }
+    .tagline{
+      font-family: Allura, cursive;
+      font-size: 32px;
+      margin: 10px 0 0;
+      color: rgba(0,0,0,.55);
+      line-height: 1.05;
+    }
+
+    /* Hero */
+    .hero{
+      margin-top: 14px;
+      border-radius: var(--radius);
+      overflow:hidden;
+      border: 1px solid var(--line2);
+      box-shadow: var(--shadow);
+      background:#ddd;
+    }
+    .hero img{
+      width:100%;
+      height: 220px;
+      object-fit:cover;
+      display:block;
+    }
+
+    /* Divider */
+    .divider{
+      margin: 22px 0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap: 14px;
+      opacity:.85;
+    }
+    .divider .hr{ height:1px; background: var(--line); flex:1; max-width: 220px; }
+    .divider .star{ width:18px;height:18px; opacity:.65; display:grid; place-items:center; }
+    .divider .star svg{ width:18px;height:18px; display:block; }
+
+    .hScript{
+      font-family: Allura, cursive;
+      font-size: 46px;
+      text-align:center;
+      margin: 0;
+      color: rgba(0,0,0,.60);
+      line-height: 1;
+    }
+    .sub{
+      text-align:center;
+      font-family:"Cormorant Garamond", serif;
+      font-size: 16px;
+      color: rgba(0,0,0,.55);
+      margin: 6px 0 0;
+    }
+
+    /* Calendar */
+    .calendar{
+      margin-top: 14px;
+      border: 1px solid var(--line2);
+      border-radius: 12px;
+      padding: 12px;
+      background: rgba(255,255,255,.22);
+    }
+    .dow{
+      display:grid;
+      grid-template-columns: repeat(7,1fr);
+      gap: 6px;
+      text-align:center;
+      font-family:"Cormorant Garamond", serif;
+      font-size: 11px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color: rgba(0,0,0,.42);
+      margin-bottom: 8px;
+    }
+    .days{
+      display:grid;
+      grid-template-columns: repeat(7,1fr);
+      gap: 6px;
+    }
+    .day{
+      height: 42px;
+      display:grid;
+      place-items:center;
+      border-radius: 10px;
+      border: 1px solid rgba(0,0,0,.08);
+      background: rgba(255,255,255,.18);
+      font-family:"Cormorant Garamond", serif;
+      font-size: 18px;
+      color: rgba(0,0,0,.62);
+      user-select:none;
+    }
+    .day.empty{ background:transparent; border: 1px solid transparent; }
+    .day.selected{
+      background: var(--accentSoft);
+      border: 1px solid rgba(27,43,74,.25);
+      color: rgba(27,43,74,.85);
+      position:relative;
+    }
+    .day.selected::after{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      border-radius: 12px;
+      border: 1px solid rgba(27,43,74,.35);
+      pointer-events:none;
+    }
+
+    /* Countdown */
+    .countGrid{
+      margin-top: 14px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .countBox{
+      border: 1px solid var(--line2);
+      border-radius: 12px;
+      background: rgba(255,255,255,.20);
+      padding: 16px 12px;
+      text-align:center;
+    }
+    .countNum{
+      margin:0 0 10px;
+      font-family:"Cormorant Garamond", serif;
+      font-size: 46px;
+      line-height: 1;
+      color: rgba(0,0,0,.62);
+    }
+    .countLbl{
+      margin:0;
+      font-family:"Cormorant Garamond", serif;
+      letter-spacing:.22em;
+      text-transform:uppercase;
+      font-size: 12px;
+      color: rgba(0,0,0,.42);
+    }
+
+    /* ===== AGENDA (FIXED LAYOUT) ===== */
+    .agendaWrap{ margin-top: 14px; }
+    .agenda{
+      position: relative;
+      padding-left: 0;
+      list-style: none;
+      margin: 0;
+    }
+    /* timeline line */
+    .agenda::before{
+      content:"";
+      position:absolute;
+      left: 27px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: rgba(0,0,0,.12);
+    }
+
+    .agendaItem{
+      position: relative;
+      padding: 20px 0 20px 80px;
+      margin: 0;
+    }
+
+    /* Icon on the left timeline */
+    .aIcon{
+      position:absolute;
+      left: 9px;
+      top: 18px;
+      width: 38px;
+      height: 38px;
+      border-radius: 999px;
+      border: 2px solid var(--bg);
+      background: rgba(255,255,255,.95);
+      display:grid;
+      place-items:center;
+      color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(0,0,0,.10);
+      flex-shrink: 0;
+      z-index: 2;
+    }
+    .aIcon svg{ width:20px; height:20px; opacity:.9; }
+
+    /* Content layout */
+    .aRow{
+      display:flex;
+      align-items:baseline;
+      gap: 14px;
+      flex-wrap: nowrap;
+    }
+
+    /* Time pill - more prominent */
+    .timePill{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding: 8px 12px;
+      border-radius: 8px;
+      background: var(--accent);
+      color: rgba(255,255,255,.95);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: .01em;
+      min-width: 70px;
+      flex: 0 0 auto;
+      white-space: nowrap;
+    }
+
+    .aTitle{
+      font-family:"Cormorant Garamond", serif;
+      font-size: 20px;
+      font-weight: 500;
+      color: rgba(0,0,0,.75);
+      margin:0;
+      line-height:1.1;
+    }
+    .aDesc{
+      margin:8px 0 0;
+      font-size: 13px;
+      color: rgba(0,0,0,.55);
+      line-height: 1.4;
+      padding-left: 0;
+    }
+
+    /* Icon links */
+    .iconLinks{
+      margin-top: 14px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .iconLink{
+      border: 1px solid var(--line2);
+      border-radius: 12px;
+      background: rgba(255,255,255,.20);
+      padding: 14px 12px;
+      text-decoration:none;
+      color: rgba(0,0,0,.66);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap: 8px;
+      transition: transform .08s ease;
+    }
+    .iconLink:active{ transform: translateY(1px); }
+    .iconSvg{ width:34px; height:34px; opacity:.85; }
+    .iconLabel{
+      margin:0;
+      font-family:"Cormorant Garamond", serif;
+      font-size: 16px;
+    }
+    .clickHere{
+      margin:0;
+      font-size: 12px;
+      color: rgba(0,0,0,.50);
+      text-decoration: underline;
+    }
+
+    .rsvpBtn{
+      margin-top: 18px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:100%;
+      border: none;
+      border-radius: 999px;
+      padding: 16px 20px;
+      background: linear-gradient(120deg, #c69d7f, #9f7457);
+      text-decoration:none;
+      color: #fffdf5;
+      font-family:"Cormorant Garamond", serif;
+      font-size: 22px;
+      letter-spacing:.05em;
+      text-transform: uppercase;
+      box-shadow: 0 12px 28px rgba(159,116,87,.28);
+      transition: transform .15s ease, box-shadow .2s ease;
+    }
+    .rsvpBtn:hover{ box-shadow: 0 18px 36px rgba(159,116,87,.32); }
+    .rsvpBtn:active{ transform: translateY(1px); box-shadow: 0 8px 20px rgba(159,116,87,.28); }
+
+    .confirmSection{ margin-top: 20px; }
+    .confirmBlock{
+      margin-top: 12px;
+      border: 1px solid var(--line2);
+      border-radius: 18px;
+      padding: 24px 20px 28px;
+      background: rgba(255,255,255,.32);
+      text-align:center;
+      box-shadow: 0 16px 40px rgba(0,0,0,.08);
+    }
+    .confirmText{
+      margin:0 0 18px;
+      font-size: 15px;
+      line-height:1.5;
+      color: rgba(0,0,0,.62);
+    }
+
+    /* Details cards */
+    .detailsGrid{
+      margin-top: 18px;
+      display:grid;
+      gap: 14px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+    .detailCard{
+      border: 1px solid var(--line2);
+      border-radius: 16px;
+      padding: 18px 16px;
+      background: rgba(255,255,255,.24);
+      box-shadow: 0 8px 26px rgba(0,0,0,.06);
+    }
+    .detailTitle{
+      margin:0 0 8px;
+      font-family:"Cormorant Garamond", serif;
+      font-size: 20px;
+      color: rgba(0,0,0,.75);
+      letter-spacing:.02em;
+    }
+    .detailText{
+      margin:0;
+      font-size: 14px;
+      line-height:1.45;
+      color: rgba(0,0,0,.58);
+    }
+    .detailAccent{ color: var(--accent); font-weight: 600; }
+
+    /* Gift */
+    .giftText{
+      margin: 14px auto 0;
+      max-width: 620px;
+      text-align:center;
+      color: rgba(0,0,0,.55);
+      font-size: 14px;
+      line-height:1.5;
+    }
+    .iban{
+      margin-top: 10px;
+      display:inline-block;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 14px;
+      letter-spacing: .02em;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--line2);
+      background: rgba(255,255,255,.22);
+      color: rgba(0,0,0,.66);
+    }
+    .copyBtn{
+      margin-top: 10px;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.18);
+      padding: 10px 12px;
+      border-radius: 999px;
+      cursor:pointer;
+      color: rgba(0,0,0,.62);
+      user-select:none;
+    }
+    .copyBtn:active{ transform: translateY(1px); }
+
+    /* ===== INTRO (REALISTIC: only envelope + bottom hint) ===== */
+    .intro{
+      position:fixed;
+      inset:0;
+      z-index: 50;
+      background: var(--bg);
+      display:grid;
+      place-items:center;
+      padding: 18px;
+      transition: opacity .5s ease, background-color 1.2s ease 2s;
+    }
+    .intro.hidden{
+      opacity:0;
+      pointer-events:none;
+    }
+
+    .intro.opening{
+      background-color: white;
+    }
+
+    .envStage{
+      width: min(420px, 90vw);
+      max-width: 520px;
+      aspect-ratio: 1 / 1;
+      border-radius: 0;
+      overflow:hidden;
+      border: none;
+      box-shadow: 0 22px 70px rgba(0,0,0,.28);
+      background: transparent;
+      position:relative;
+      cursor: pointer;
+      transition: transform .25s cubic-bezier(.34,.1,.68,.55), box-shadow .25s ease;
+      opacity: 1;
+    }
+
+    .envStage:hover{
+      transform: translateY(-6px);
+      box-shadow: 0 28px 85px rgba(0,0,0,.32);
+    }
+
+    .envStage:active{
+      transform: translateY(-2px);
+    }
+
+    .intro.opening .envStage{
+      opacity: 0;
+      transition: opacity .3s ease 1.7s;
+    }
+
+    /* closed/open images (same scene) */
+    .envImg{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit: cover;
+      object-position: center;
+      transform: scale(1);
+      transition: opacity 2s ease-in-out;
+      will-change: opacity;
+      display: block;
+    }
+    #envOpen{ opacity:0; pointer-events: none; }
+
+    .intro.opening #envClosed{ opacity:0; }
+    .intro.opening #envOpen{ opacity:1; }
+
+    /* flap hint (removed) */
+    .flap{
+      display: none;
+    }
+
+    /* letter slide (removed) */
+    .letter{
+      display: none;
+    }
+
+    /* bottom hint only */
+    .tapHint{
+      position:absolute;
+      left: 50%;
+      bottom: 24px;
+      transform: translateX(-50%);
+      border: 1px solid rgba(0,0,0,.12);
+      background: rgba(242,239,231,.88);
+      backdrop-filter: blur(8px);
+      border-radius: 999px;
+      padding: 12px 20px;
+      font-size: 15px;
+      font-weight: 500;
+      color: rgba(0,0,0,.70);
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      user-select:none;
+      box-shadow: 0 6px 18px rgba(0,0,0,.12);
+      letter-spacing: .01em;
+      opacity: 1;
+      transition: opacity .3s ease;
+    }
+    .pulse{
+      width:8px;height:8px;border-radius:99px;
+      background: rgba(180, 30, 50, 0.85);
+      box-shadow: 0 0 0 0 rgba(180, 30, 50, 0.45);
+      animation:pulse 1.5s infinite;
+    }
+    @keyframes pulse{
+      0%{ box-shadow:0 0 0 0 rgba(180, 30, 50, 0.45); }
+      70%{ box-shadow:0 0 0 18px rgba(180, 30, 50, 0); }
+      100%{ box-shadow:0 0 0 0 rgba(180, 30, 50, 0); }
+    }
+
+    .intro.opening .tapHint{ opacity:0; }
+
+    .easterHint{
+      position:absolute;
+      left: 16px;
+      bottom: 18px;
+      font-size: 10px;
+      letter-spacing:.08em;
+      text-transform: uppercase;
+      color: rgba(0,0,0,.35);
+      opacity:.8;
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      .wrap, .intro, .envImg, .flap, .letter{ transition:none !important; }
+      .pulse{ animation:none !important; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- INTRO: show ONLY envelope + bottom hint -->
+  <div class="intro" id="intro" role="button" tabindex="0" aria-label="Apri la partecipazione">
+    <div class="envStage">
+      <img class="envImg" id="envClosed" src="assets/envelope-closed.jpg" alt="Busta chiusa">
+      <img class="envImg" id="envOpen"   src="assets/envelope-open.jpg"   alt="Busta aperta">
+      <div class="flap"></div>
+      <div class="letter" aria-hidden="true"></div>
+
+      <div class="tapHint"><span class="pulse"></span> Tocca per aprire</div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="wrap" id="wrap">
+
+    <span class="easterHint">* trova l'easter egg</span>
+
+    <div class="titleBlock">
+      <p class="names">Davide &amp; Alessandra</p>
+      <p class="tagline">Vieni per il nostro amore,<br>resta per la torta!</p>
+    </div>
+
+    <div class="hero">
+      <img src="assets/hero.jpg" alt="Location" onerror="this.style.display='none'">
+    </div>
+
+    <!-- divider -->
+    <div class="divider">
+      <div class="hr"></div>
+      <div class="star">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" style="color:rgba(0,0,0,.55)">
+          <path d="M12 2l1.2 6.1L19 12l-5.8 1.9L12 20l-1.2-6.1L5 12l5.8-3.9L12 2z"></path>
+        </svg>
+      </div>
+      <div class="hr"></div>
+    </div>
+
+    <!-- Calendar -->
+    <section>
+      <p class="hScript">Save The Date</p>
+      <p class="sub">Ottobre 2026</p>
+      <div class="calendar">
+        <div class="dow">
+          <div>Lun</div><div>Mar</div><div>Mer</div><div>Gio</div><div>Ven</div><div>Sab</div><div>Dom</div>
+        </div>
+        <div class="days" id="calDays"></div>
+      </div>
+    </section>
+
+    <div class="divider">
+      <div class="hr"></div>
+      <div class="star">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" style="color:rgba(0,0,0,.55)">
+          <path d="M12 2l1.2 6.1L19 12l-5.8 1.9L12 20l-1.2-6.1L5 12l5.8-3.9L12 2z"></path>
+        </svg>
+      </div>
+      <div class="hr"></div>
+    </div>
+
+    <!-- Countdown -->
+    <section>
+      <p class="hScript">Mancano...</p>
+      <p class="sub">Per il giorno più speciale delle nostre vite</p>
+
+      <div class="countGrid">
+        <div class="countBox"><p class="countNum" id="dd">—</p><p class="countLbl">Giorni</p></div>
+        <div class="countBox"><p class="countNum" id="hh">—</p><p class="countLbl">Ore</p></div>
+        <div class="countBox"><p class="countNum" id="mm">—</p><p class="countLbl">Minuti</p></div>
+        <div class="countBox"><p class="countNum" id="ss">—</p><p class="countLbl">Secondi</p></div>
+      </div>
+    </section>
+
+    <div class="divider">
+      <div class="hr"></div>
+      <div class="star">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" style="color:rgba(0,0,0,.55)">
+          <path d="M12 2l1.2 6.1L19 12l-5.8 1.9L12 20l-1.2-6.1L5 12l5.8-3.9L12 2z"></path>
+        </svg>
+      </div>
+      <div class="hr"></div>
+    </div>
+
+    <!-- Agenda -->
+    <section>
+      <p class="hScript">Programma del giorno</p>
+      <p class="sub">Ecco cosa abbiamo preparato per voi</p>
+
+      <div class="agendaWrap">
+        <div class="agenda" id="agenda"></div>
+      </div>
+    </section>
+
+    <div class="divider">
+      <div class="hr"></div>
+      <div class="star">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" style="color:rgba(0,0,0,.55)">
+          <path d="M12 2l1.2 6.1L19 12l-5.8 1.9L12 20l-1.2-6.1L5 12l5.8-3.9L12 2z"></path>
+        </svg>
+      </div>
+      <div class="hr"></div>
+    </div>
+
+    <!-- Where -->
+    <section>
+      <p class="hScript">Dove</p>
+      <p class="sub">Clicca e scopri come arrivare</p>
+
+      <div class="iconLinks">
+        <a class="iconLink" id="churchLink" href="#" target="_blank" rel="noopener">
+          <svg class="iconSvg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v6"></path>
+            <path d="M9.5 4.5h5"></path>
+            <path d="M5 10l7-5 7 5v10H5V10z"></path>
+            <path d="M10 20v-5a2 2 0 0 1 4 0v5"></path>
+          </svg>
+          <p class="iconLabel">Chiesa</p>
+          <p class="clickHere">Clicca qui</p>
+        </a>
+
+        <a class="iconLink" id="venueLink" href="#" target="_blank" rel="noopener">
+          <svg class="iconSvg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 3v8"></path><path d="M5.5 3v8"></path><path d="M8.5 3v8"></path>
+            <path d="M6.5 11v10"></path>
+            <path d="M14 3v8c0 1.2 1 2 2.2 2H18V3"></path>
+            <path d="M18 13v8"></path>
+          </svg>
+          <p class="iconLabel">Location</p>
+          <p class="clickHere">Clicca qui</p>
+        </a>
+      </div>
+    </section>
+
+    <div class="divider">
+      <div class="hr"></div>
+      <div class="star">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" style="color:rgba(0,0,0,.55)">
+          <path d="M12 2l1.2 6.1L19 12l-5.8 1.9L12 20l-1.2-6.1L5 12l5.8-3.9L12 2z"></path>
+        </svg>
+      </div>
+      <div class="hr"></div>
+    </div>
+
+    <!-- RSVP callout -->
+    <section class="confirmSection">
+      <p class="hScript">Ci sarai anche tu?</p>
+      <div class="confirmBlock">
+        <p class="confirmText">Ricordaci la tua presenza così possiamo preparare un posto speciale per te.</p>
+        <a class="rsvpBtn" id="rsvpBtn" href="#" target="_blank" rel="noopener">Conferma Presenza</a>
+      </div>
+    </section>
+
+    <div class="divider">
+      <div class="hr"></div>
+      <div class="star">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" style="color:rgba(0,0,0,.55)">
+          <path d="M12 2l1.2 6.1L19 12l-5.8 1.9L12 20l-1.2-6.1L5 12l5.8-3.9L12 2z"></path>
+        </svg>
+      </div>
+      <div class="hr"></div>
+    </div>
+
+    <!-- Details -->
+    <section class="detailsSection">
+      <p class="hScript" id="detailsTitle">Dettagli speciali</p>
+      <p class="sub">Qualche nota per arrivare pronti</p>
+
+      <div class="detailsGrid">
+        <div class="detailCard">
+          <p class="detailTitle">Parcheggio</p>
+          <p class="detailText">La location dispone di un parcheggio interno dedicato agli invitati: segui la segnaletica all'arrivo.</p>
+        </div>
+        <div class="detailCard">
+          <p class="detailTitle">Foto</p>
+          <p class="detailText">Condividi i tuoi scatti con <span class="detailAccent">@davide.delfranco</span> e <span class="detailAccent">@alessandra_riccardo</span>, non vediamo l'ora di guardarli.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider">
+      <div class="hr"></div>
+      <div class="star">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" style="color:rgba(0,0,0,.55)">
+          <path d="M12 2l1.2 6.1L19 12l-5.8 1.9L12 20l-1.2-6.1L5 12l5.8-3.9L12 2z"></path>
+        </svg>
+      </div>
+      <div class="hr"></div>
+    </div>
+
+    <!-- Gift -->
+    <section>
+      <p class="hScript">Regalo</p>
+      <p class="sub">Il regalo più bello è avervi con noi</p>
+
+      <div class="giftText">
+        Se desideri farci un pensiero, ci aiuterai a costruire ricordi e progetti per il nostro futuro.
+        <div class="iban" id="ibanText">IT00X0000000000000000000000</div>
+        <div><button class="copyBtn" id="copyIbanBtn" type="button">📋 Copia IBAN</button></div>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    const CONFIG = {
+      weddingDateTime: "2026-10-16T11:00:00+02:00",
+      calendarYear: 2026,
+      calendarMonthIndex: 9, // Ottobre
+      highlightDay: 16,
+
+      churchMaps: "https://maps.app.goo.gl/AZcMMv1gs4DUiPhw9",
+      venueMaps:  "https://maps.app.goo.gl/WRKFtLNrFsuk8q9r7",
+      rsvpLink:   "https://docs.google.com/forms/d/e/1FAIpQLSfS4_A3zoRaQdCwYbfBElDXoZJKDoBmDhy7ML3eWmzFomGSnA/viewform?pli=1&pli=1",
+
+      iban: "IT00X0000000000000000000000",
+
+      agenda: [
+        { time:"11:00", title:"Cerimonia", desc:"Chiesa", icon:"church" },
+        { time:"13:30", title:"Aperitivo di benvenuto", desc:"Arrivo in location", icon:"drink" },
+        { time:"14:30", title:"Buffet", desc:"Sapori e brindisi", icon:"cutlery" },
+        { time:"16:00", title:"Pranzo in sala", desc:"Inizia la festa", icon:"cutlery" },
+        { time:"19:00", title:"Taglio torta nuziale", desc:"e buffet di dolci", icon:"cake" },
+      ],
+    };
+
+    // Links
+    document.getElementById("churchLink").href = CONFIG.churchMaps;
+    document.getElementById("venueLink").href  = CONFIG.venueMaps;
+    document.getElementById("rsvpBtn").href    = CONFIG.rsvpLink;
+
+    // IBAN
+    document.getElementById("ibanText").textContent = CONFIG.iban;
+    document.getElementById("copyIbanBtn").addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(CONFIG.iban);
+        const btn = document.getElementById("copyIbanBtn");
+        const old = btn.textContent;
+        btn.textContent = "✅ Copiato";
+        setTimeout(() => btn.textContent = old, 1200);
+      } catch {
+        alert("Copia manualmente l'IBAN: " + CONFIG.iban);
+      }
+    });
+
+    // Calendar render (Mon-first)
+    function renderCalendar(year, monthIndex, highlightDay){
+      const calDays = document.getElementById("calDays");
+      calDays.innerHTML = "";
+
+      const first = new Date(year, monthIndex, 1);
+      const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
+      const firstDow = (first.getDay() + 6) % 7;
+
+      for(let i=0;i<firstDow;i++){
+        const e = document.createElement("div");
+        e.className = "day empty";
+        calDays.appendChild(e);
+      }
+      for(let d=1; d<=daysInMonth; d++){
+        const cell = document.createElement("div");
+        cell.className = "day" + (d === highlightDay ? " selected" : "");
+        cell.textContent = String(d);
+        calDays.appendChild(cell);
+      }
+      const totalCells = firstDow + daysInMonth;
+      const pad = (7 - (totalCells % 7)) % 7;
+      for(let i=0;i<pad;i++){
+        const e = document.createElement("div");
+        e.className = "day empty";
+        calDays.appendChild(e);
+      }
+    }
+    renderCalendar(CONFIG.calendarYear, CONFIG.calendarMonthIndex, CONFIG.highlightDay);
+
+    // Countdown
+    const target = new Date(CONFIG.weddingDateTime).getTime();
+    const pad2 = (n) => String(n).padStart(2,"0");
+    const tick = () => {
+      const diff = Math.max(0, target - Date.now());
+      const s = Math.floor(diff/1000);
+      const dd = Math.floor(s/86400);
+      const hh = Math.floor((s%86400)/3600);
+      const mm = Math.floor((s%3600)/60);
+      const ss = s%60;
+      document.getElementById("dd").textContent = dd;
+      document.getElementById("hh").textContent = pad2(hh);
+      document.getElementById("mm").textContent = pad2(mm);
+      document.getElementById("ss").textContent = pad2(ss);
+    };
+    tick(); setInterval(tick, 1000);
+
+    // Agenda
+    const ICONS = {
+      drink: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M8 3h8l-1 8a4 4 0 0 1-6 0L8 3z"></path>
+                <path d="M12 11v9"></path><path d="M8 20h8"></path>
+              </svg>`,
+      church:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2v6"></path><path d="M9.5 4.5h5"></path>
+                <path d="M5 10l7-5 7 5v10H5V10z"></path>
+                <path d="M10 20v-5a2 2 0 0 1 4 0v5"></path>
+              </svg>`,
+      cutlery:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 3v8"></path><path d="M5.5 3v8"></path><path d="M8.5 3v8"></path>
+                <path d="M6.5 11v10"></path>
+                <path d="M14 3v8c0 1.2 1 2 2.2 2H18V3"></path>
+                <path d="M18 13v8"></path>
+              </svg>`,
+      cake:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 10h12v10H6V10z"></path>
+              <path d="M6 14c2 1.5 4 1.5 6 0s4-1.5 6 0"></path>
+              <path d="M9 10V7a3 3 0 0 1 6 0v3"></path>
+            </svg>`,
+    };
+
+    const agendaEl = document.getElementById("agenda");
+    agendaEl.innerHTML = "";
+    CONFIG.agenda.forEach(item => {
+      const row = document.createElement("div");
+      row.className = "agendaItem";
+      row.innerHTML = `
+        <div class="aIcon">${ICONS[item.icon] ?? ICONS.cutlery}</div>
+        <div class="aRow">
+          <span class="timePill">${item.time}</span>
+          <p class="aTitle">${item.title}</p>
+        </div>
+        <p class="aDesc">${item.desc}</p>
+      `;
+      agendaEl.appendChild(row);
+    });
+
+    // Envelope open flow
+    const intro = document.getElementById("intro");
+    const wrap = document.getElementById("wrap");
+    const detailsTitle = document.getElementById("detailsTitle");
+    let isOpening = false;
+    
+    const openInvite = () => {
+      if (isOpening) return;
+      isOpening = true;
+      
+      // Add opening class to trigger animations
+      intro.classList.add("opening");
+      
+      // Timeline:
+      // 0-2s: busta si apre (fade dalla chiusa all'aperta)
+      // 2-3s: sfondo diventa bianco (0.2s delay + 1.2s transition)
+      // 3.2s: nascondi intro, mostra partecipazione
+      setTimeout(() => {
+        intro.classList.add("hidden");
+        wrap.classList.add("show");
+        window.scrollTo({ top: 0, behavior: "auto" });
+      }, 3200);
+    };
+    
+    intro.addEventListener("click", openInvite);
+    intro.addEventListener("touchend", (e) => {
+      e.preventDefault();
+      openInvite();
+    });
+    intro.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        openInvite();
+      }
+    });
+
+    // Easter egg: 7 taps on "Dettagli speciali"
+    let detailsTapCount = 0;
+    let detailsTimeout;
+    detailsTitle.addEventListener("click", () => {
+      detailsTapCount++;
+      clearTimeout(detailsTimeout);
+      if (detailsTapCount >= 7){
+        window.open("https://www.youtube.com/watch?v=1Elh5AR3G4M", "_blank", "noopener");
+        detailsTapCount = 0;
+        return;
+      }
+      detailsTimeout = setTimeout(() => { detailsTapCount = 0; }, 2500);
+    });
+  </script>
+</body>
+</html>
