@@ -434,9 +434,8 @@
     }
 
     .envStage{
-      width: min(420px, 90vw);
-      max-width: 520px;
-      aspect-ratio: 1 / 1;
+      width: min(420px, 90vw, calc(90vh * 2 / 3));
+      aspect-ratio: 2 / 3;
       border-radius: 0;
       overflow:hidden;
       border: none;
@@ -536,6 +535,15 @@
       text-transform: uppercase;
       color: rgba(0,0,0,.35);
       opacity:.8;
+    }
+
+    @media (max-width: 640px){
+      .intro{ padding: 8px; }
+      .tapHint{
+        bottom: 16px;
+        padding: 10px 16px;
+        font-size: 14px;
+      }
     }
 
     @media (prefers-reduced-motion: reduce){
