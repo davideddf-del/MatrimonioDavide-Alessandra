@@ -46,20 +46,53 @@
     .wrap.show{ opacity:1; transform: translateY(0); }
 
     /* ===== Header ===== */
-    .titleBlock{ text-align:center; margin-top: 10px; }
+    .titleBlock{ margin-top: 10px; text-align:center; }
+    .titleInner{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap: 12px;
+      flex-wrap:nowrap;
+    }
+    .titlePhoto{
+      height:170px;
+      width:auto;
+      border-radius:0;
+      object-fit:contain;
+      border:none;
+      box-shadow:none;
+      background:transparent;
+      display:block;
+    }
     .names{
       font-family: Allura, cursive;
-      font-size: 56px;
+      font-size: 48px;
       line-height: 1;
       margin: 0;
       color: rgba(0,0,0,.68);
+      text-align:left;
+      display:inline-block;
+      transform: translate(-16px, 32px);
     }
     .tagline{
       font-family: Allura, cursive;
-      font-size: 32px;
-      margin: 10px 0 0;
+      font-size: 30px;
+      margin: 18px 0 0;
       color: rgba(0,0,0,.55);
       line-height: 1.05;
+      white-space: nowrap;
+    }
+    @media (max-width: 540px){
+      .titleInner{ gap: 10px; justify-content:center; }
+      .titlePhoto{ height:130px; }
+      .names{ font-size: 38px; transform: translate(-10px, 26px); }
+      .tagline{ font-size: 24px; white-space: normal; }
+    }
+    @media (max-width: 360px){
+      .titleInner{ gap:8px; }
+      .titlePhoto{ height:180px; }
+      .names{ font-size: 36px; transform: translate(0, 28px); }
+      .tagline{ font-size: 22px; white-space: normal; }
     }
 
     /* Hero */
@@ -537,6 +570,20 @@
       opacity:.8;
     }
 
+    .hintDot{
+      display:inline-block;
+      width:8px;
+      height:8px;
+      border-radius:999px;
+      border:1px solid rgba(0,0,0,.28);
+      background: rgba(0,0,0,.12);
+      margin-left:6px;
+      vertical-align:middle;
+      cursor:pointer;
+      transition: transform .08s ease;
+    }
+    .hintDot:active{ transform: scale(.9); }
+
     @media (max-width: 640px){
       .intro{ padding: 8px; }
       .tapHint{
@@ -570,11 +617,14 @@
   <!-- MAIN -->
   <div class="wrap" id="wrap">
 
-    <span class="easterHint">* trova l'easter egg</span>
+    <span class="easterHint">Clicca qui 7 volte<span class="hintDot" id="hintDot" role="button" tabindex="0" aria-label="Premi sette volte"></span></span>
 
     <div class="titleBlock">
-      <p class="names">Davide &amp; Alessandra</p>
-      <p class="tagline">Vieni per il nostro amore,<br>resta per la torta!</p>
+      <div class="titleInner">
+        <img class="titlePhoto" src="assets/immagine_intestazione.png" alt="Davide e Alessandra" onerror="this.style.display='none'">
+        <p class="names">Davide &amp; Alessandra</p>
+      </div>
+      <p class="tagline">Vieni per il nostro amore, resta per accompagnarci in questo giorno magico.</p>
     </div>
 
     <div class="hero">
@@ -771,11 +821,8 @@
       iban: "IT00X0000000000000000000000",
 
       agenda: [
-        { time:"11:00", title:"Cerimonia", desc:"Chiesa", icon:"church" },
-        { time:"13:30", title:"Aperitivo di benvenuto", desc:"Arrivo in location", icon:"drink" },
-        { time:"14:30", title:"Buffet", desc:"Sapori e brindisi", icon:"cutlery" },
-        { time:"16:00", title:"Pranzo in sala", desc:"Inizia la festa", icon:"cutlery" },
-        { time:"19:00", title:"Taglio torta nuziale", desc:"e buffet di dolci", icon:"cake" },
+        { time:"11:00", title:"Chiesa", desc:"Ci diciamo sì in una cerimonia piena di emozioni.", icon:"church" },
+        { time:"14:00", title:"Location", desc:"Festeggiamo tra sorrisi, musica e calici nella nostra location del cuore.", icon:"drink" },
       ],
     };
 
@@ -888,7 +935,7 @@
     // Envelope open flow
     const intro = document.getElementById("intro");
     const wrap = document.getElementById("wrap");
-    const detailsTitle = document.getElementById("detailsTitle");
+    const hintDot = document.getElementById("hintDot");
     let isOpening = false;
     
     const openInvite = () => {
@@ -921,19 +968,30 @@
       }
     });
 
-    // Easter egg: 7 taps on "Dettagli speciali"
-    let detailsTapCount = 0;
-    let detailsTimeout;
-    detailsTitle.addEventListener("click", () => {
-      detailsTapCount++;
-      clearTimeout(detailsTimeout);
-      if (detailsTapCount >= 7){
+    // Easter egg: 7 tap sul pallino della hint
+    let hintTapCount = 0;
+    let hintTimeout;
+    const triggerEasterEgg = () => {
+      hintTapCount++;
+      clearTimeout(hintTimeout);
+      if (hintTapCount >= 7){
         window.open("https://www.youtube.com/watch?v=1Elh5AR3G4M", "_blank", "noopener");
-        detailsTapCount = 0;
+        hintTapCount = 0;
         return;
       }
-      detailsTimeout = setTimeout(() => { detailsTapCount = 0; }, 2500);
+      hintTimeout = setTimeout(() => { hintTapCount = 0; }, 2500);
+    };
+    hintDot.addEventListener("click", (e) => {
+      e.stopPropagation();
+      triggerEasterEgg();
     });
+    hintDot.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        triggerEasterEgg();
+      }
+    });
+
   </script>
 </body>
 </html>
