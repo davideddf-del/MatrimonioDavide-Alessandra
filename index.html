@@ -34,16 +34,59 @@
       overflow-x:hidden;
     }
 
-    /* ===== MAIN WRAP ===== */
     .wrap{
       max-width: 720px;
       margin: 0 auto;
-      padding: 18px 16px 70px;
+      padding: 18px 16px 110px;
       opacity:0;
       transform: translateY(10px);
       transition: opacity .55s ease, transform .55s ease;
     }
     .wrap.show{ opacity:1; transform: translateY(0); }
+
+    .easterHint{
+      position:absolute;
+      left: 16px;
+      bottom: -10px;
+      font-size: 10px;
+      letter-spacing:.08em;
+      text-transform: uppercase;
+      color: rgba(0,0,0,.35);
+      opacity:.82;
+      display:flex;
+      flex-direction:column;
+      align-items:flex-start;
+      gap:6px;
+      line-height:1.2;
+      z-index: 2;
+      pointer-events:none;
+    }
+    .wrap:not(.show) .easterHint{ display:none; }
+
+    .hintTarget{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:3px;
+      pointer-events:auto;
+    }
+    .hintDot{
+      display:inline-block;
+      width:8px;
+      height:8px;
+      border-radius:999px;
+      border:1px solid rgba(0,0,0,.28);
+      background: rgba(0,0,0,.12);
+      cursor:pointer;
+      transition: transform .08s ease;
+    }
+    .hintDot:active{ transform: scale(.9); }
+    .hintHand{
+      width:20px;
+      height:20px;
+      opacity:.95;
+      display:block;
+    }
 
     /* ===== Header ===== */
     .titleBlock{ margin-top: 10px; text-align:center; }
@@ -302,9 +345,10 @@
     }
     .aDesc{
       margin:8px 0 0;
-      font-size: 13px;
+      font-family:"Cormorant Garamond", serif;
+      font-size: 15px;
       color: rgba(0,0,0,.55);
-      line-height: 1.4;
+      line-height: 1.5;
       padding-left: 0;
     }
 
@@ -376,6 +420,7 @@
     }
     .confirmText{
       margin:0 0 18px;
+      font-family:"Cormorant Garamond", serif;
       font-size: 15px;
       line-height:1.5;
       color: rgba(0,0,0,.62);
@@ -404,9 +449,19 @@
     }
     .detailText{
       margin:0;
-      font-size: 14px;
-      line-height:1.45;
+      font-family:"Cormorant Garamond", serif;
+      font-size: 15px;
+      line-height:1.5;
       color: rgba(0,0,0,.58);
+    }
+    .photoLink{
+      color: var(--accent);
+      font-weight: 600;
+      text-decoration: underline;
+    }
+    .photoLink:focus,
+    .photoLink:hover{
+      color: #0f1b30;
     }
     .detailAccent{ color: var(--accent); font-weight: 600; }
 
@@ -415,9 +470,10 @@
       margin: 14px auto 0;
       max-width: 620px;
       text-align:center;
+      font-family:"Cormorant Garamond", serif;
       color: rgba(0,0,0,.55);
-      font-size: 14px;
-      line-height:1.5;
+      font-size: 15px;
+      line-height:1.6;
     }
     .iban{
       margin-top: 10px;
@@ -559,31 +615,6 @@
 
     .intro.opening .tapHint{ opacity:0; }
 
-    .easterHint{
-      position:absolute;
-      left: 16px;
-      bottom: 18px;
-      font-size: 10px;
-      letter-spacing:.08em;
-      text-transform: uppercase;
-      color: rgba(0,0,0,.35);
-      opacity:.8;
-    }
-
-    .hintDot{
-      display:inline-block;
-      width:8px;
-      height:8px;
-      border-radius:999px;
-      border:1px solid rgba(0,0,0,.28);
-      background: rgba(0,0,0,.12);
-      margin-left:6px;
-      vertical-align:middle;
-      cursor:pointer;
-      transition: transform .08s ease;
-    }
-    .hintDot:active{ transform: scale(.9); }
-
     @media (max-width: 640px){
       .intro{ padding: 8px; }
       .tapHint{
@@ -617,7 +648,13 @@
   <!-- MAIN -->
   <div class="wrap" id="wrap">
 
-    <span class="easterHint">Clicca qui 7 volte<span class="hintDot" id="hintDot" role="button" tabindex="0" aria-label="Premi sette volte"></span></span>
+    <span class="easterHint">
+      Tocca il punto 3 volte
+      <span class="hintTarget">
+        <span class="hintDot" id="hintDot" role="button" tabindex="0" aria-label="Premi tre volte"></span>
+        <img class="hintHand" src="assets/hand-poiner.png" alt="Mano che indica il punto segreto">
+      </span>
+    </span>
 
     <div class="titleBlock">
       <div class="titleInner">
@@ -751,7 +788,7 @@
     <section class="confirmSection">
       <p class="hScript">Ci sarai anche tu?</p>
       <div class="confirmBlock">
-        <p class="confirmText">Ricordaci la tua presenza così possiamo preparare un posto speciale per te.</p>
+        <p class="confirmText">Assicuraci della tua presenza così possiamo preparare un posto speciale per te.</p>
         <a class="rsvpBtn" id="rsvpBtn" href="#" target="_blank" rel="noopener">Conferma Presenza</a>
       </div>
     </section>
@@ -778,7 +815,7 @@
         </div>
         <div class="detailCard">
           <p class="detailTitle">Foto</p>
-          <p class="detailText">Condividi i tuoi scatti con <span class="detailAccent">@davide.delfranco</span> e <span class="detailAccent">@alessandra_riccardo</span>, non vediamo l'ora di guardarli.</p>
+          <p class="detailText">Carica e scarica i tuoi scatti nella nostra <a id="photoCloudLink" class="photoLink" href="#" target="_blank" rel="noopener">cartella foto condivisa</a> per condividere con noi i momenti speciali e custodirli nel nostro album digitale.</p>
         </div>
       </div>
     </section>
@@ -817,6 +854,7 @@
       churchMaps: "https://maps.app.goo.gl/AZcMMv1gs4DUiPhw9",
       venueMaps:  "https://maps.app.goo.gl/WRKFtLNrFsuk8q9r7",
       rsvpLink:   "https://docs.google.com/forms/d/e/1FAIpQLSfS4_A3zoRaQdCwYbfBElDXoZJKDoBmDhy7ML3eWmzFomGSnA/viewform?pli=1&pli=1",
+      photoCloudLink: "https://photos.app.goo.gl/9NFt9ZhkfqJMahqx7",
 
       iban: "IT00X0000000000000000000000",
 
@@ -830,6 +868,8 @@
     document.getElementById("churchLink").href = CONFIG.churchMaps;
     document.getElementById("venueLink").href  = CONFIG.venueMaps;
     document.getElementById("rsvpBtn").href    = CONFIG.rsvpLink;
+    const photoLinkEl = document.getElementById("photoCloudLink");
+    if (photoLinkEl) photoLinkEl.href = CONFIG.photoCloudLink;
 
     // IBAN
     document.getElementById("ibanText").textContent = CONFIG.iban;
@@ -968,13 +1008,13 @@
       }
     });
 
-    // Easter egg: 7 tap sul pallino della hint
+    // Easter egg: 3 tap sul pallino della hint
     let hintTapCount = 0;
     let hintTimeout;
     const triggerEasterEgg = () => {
       hintTapCount++;
       clearTimeout(hintTimeout);
-      if (hintTapCount >= 7){
+      if (hintTapCount >= 3){
         window.open("https://www.youtube.com/watch?v=1Elh5AR3G4M", "_blank", "noopener");
         hintTapCount = 0;
         return;
