@@ -7,59 +7,223 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      --bg:#f2efe7;
-      --ink:#2b2b2b;
-      --muted:rgba(0,0,0,.55);
-      --line:rgba(0,0,0,.18);
-      --line2:rgba(0,0,0,.12);
+      --bg:#f0ddd6;
+      --ink:#3a2e28;
+      --muted:rgba(58,46,40,.55);
+      --line:rgba(58,46,40,.18);
+      --line2:rgba(58,46,40,.12);
 
-      --accent:#1b2b4a;
-      --accentSoft:rgba(27,43,74,.10);
+      --accent:#8c6b56;
+      --accentSoft:rgba(140,107,86,.10);
+      --rosegold:#b8907a;
+      --cream:#faf6f0;
+      --paper:#f8f7f4;
 
       --radius:14px;
-      --shadow:0 18px 45px rgba(0,0,0,.12);
+      --shadow:0 18px 45px rgba(0,0,0,.08);
     }
 
     *{ box-sizing:border-box; }
-    html,body{ height:100%; }
+    html{ height:100%; margin:0; padding:0; overflow-y:scroll; overscroll-behavior: none; }
+    body{ height:100%; margin:0; padding:0; overscroll-behavior: none; }
     body{
       margin:0;
       background:var(--bg);
       color:var(--ink);
-      font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, sans-serif;
+      font-family:"Cormorant Garamond", Georgia, "Times New Roman", serif;
       overflow-x:hidden;
     }
 
-    /* ===== MAIN WRAP ===== */
+    /* === OUTER PAGE with floral bg === */
+    .pageOuter{
+      position:relative;
+      min-height:100vh;
+      overflow:hidden;
+    }
+
+    /* Watercolor floral images outside the arch */
+    .floralImg{
+      position:fixed;
+      pointer-events:none;
+      z-index:10;
+      max-width:none;
+    }
+    .floralImg--bl{
+      bottom:-50px; left:-50px;
+      width:min(90vw, 560px);
+      height:auto;
+    }
+    .floralImg--br{
+      bottom:-50px; right:-50px;
+      width:min(85vw, 540px);
+      height:auto;
+    }
+    .floralImg--tl{
+      top:-45px; left:-45px;
+      width:min(85vw, 540px);
+      height:auto;
+    }
+    .floralImg--tr{
+      top:-45px; right:-45px;
+      width:min(85vw, 540px);
+      height:auto;
+    }
+
+    /* === ARCH CONTAINER === */
+    .archWrap{
+      position:relative;
+      max-width:720px;
+      margin:0 auto;
+      z-index:2;
+    }
+    .arch{
+      position:relative;
+      border-radius: 300px 300px 0 0;
+      padding: 60px 28px 0;
+      margin: 24px 16px 0;
+      background: url('assets/paper-texture.png') repeat;
+      background-size: 512px 512px;
+      border: 1px solid rgba(184,144,122,.2);
+      border-bottom: none;
+    }
+
+    /* Content below arch continues seamlessly */
+    .archBody{
+      position:relative;
+      background: url('assets/paper-texture.png') repeat;
+      background-size: 512px 512px;
+      margin: 0 16px;
+      padding: 10px 28px 80px;
+      border-left: 1px solid rgba(184,144,122,.2);
+      border-right: 1px solid rgba(184,144,122,.2);
+      border-bottom: 1px solid rgba(184,144,122,.2);
+      box-shadow: 0 12px 40px rgba(0,0,0,.04);
+    }
+
     .wrap{
       max-width: 720px;
       margin: 0 auto;
-      padding: 18px 16px 70px;
+      padding: 0;
       opacity:0;
       transform: translateY(10px);
       transition: opacity .55s ease, transform .55s ease;
     }
     .wrap.show{ opacity:1; transform: translateY(0); }
 
+    .easterHint{
+      position:relative;
+      left: 0;
+      margin-top: 40px;
+      margin-bottom: -40px;
+      padding-bottom: 30px;
+      font-size: 10px;
+      letter-spacing:.08em;
+      text-transform: uppercase;
+      color: rgba(58,46,40,.30);
+      opacity:.82;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:6px;
+      line-height:1.2;
+      z-index: 2;
+      pointer-events:none;
+      text-align:center;
+    }
+    .wrap:not(.show) .easterHint{ display:none; }
+
+    .hintTarget{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:3px;
+      pointer-events:auto;
+    }
+    .hintDot{
+      display:inline-block;
+      width:8px;
+      height:8px;
+      border-radius:999px;
+      border:1px solid rgba(58,46,40,.22);
+      background: rgba(58,46,40,.10);
+      cursor:pointer;
+      transition: transform .08s ease;
+    }
+    .hintDot:active{ transform: scale(.9); }
+    .hintHand{
+      width:20px;
+      height:20px;
+      opacity:.95;
+      display:block;
+    }
+
     /* ===== Header ===== */
-    .titleBlock{ text-align:center; margin-top: 10px; }
+    .titleBlock{ margin-top: 10px; text-align:center; }
+    .titleInner{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap: 12px;
+      flex-wrap:nowrap;
+    }
+    .titlePhoto{
+      height:170px;
+      width:auto;
+      border-radius:0;
+      object-fit:contain;
+      border:none;
+      box-shadow:none;
+      background:transparent;
+      display:block;
+    }
     .names{
-      font-family: Allura, cursive;
-      font-size: 56px;
-      line-height: 1;
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-weight: 300;
+      font-size: 44px;
+      line-height: 1.1;
       margin: 0;
-      color: rgba(0,0,0,.68);
+      color: rgba(58,46,40,.72);
+      text-align:left;
+      display:inline-block;
+      transform: translate(-16px, 32px);
+      letter-spacing: 0.02em;
     }
     .tagline{
       font-family: Allura, cursive;
-      font-size: 32px;
-      margin: 10px 0 0;
-      color: rgba(0,0,0,.55);
-      line-height: 1.05;
+      font-size: 26px;
+      margin: 18px 0 0;
+      color: rgba(58,46,40,.50);
+      line-height: 1.2;
+      white-space: normal;
+      text-align: center;
+    }
+    @media (max-width: 540px){
+      .titleInner{ gap: 10px; justify-content:center; }
+      .titlePhoto{ height:130px; }
+      .names{ font-size: 34px; transform: translate(-10px, 26px); }
+      .tagline{ font-size: 22px; white-space: normal; }
+      .arch{ border-radius: 200px 200px 0 0; padding: 40px 18px 0; }
+      .archBody{ padding: 0 18px 60px; }
+      .floralImg--bl{ width:min(95vw, 480px); }
+      .floralImg--br{ width:min(90vw, 460px); }
+      .floralImg--tl{ width:min(90vw, 460px); }
+      .floralImg--tr{ width:min(90vw, 460px); }
+    }
+    @media (max-width: 360px){
+      .titleInner{ gap:8px; }
+      .titlePhoto{ height:180px; }
+      .names{ font-size: 30px; transform: translate(0, 28px); }
+      .tagline{ font-size: 20px; white-space: normal; }
+      .arch{ border-radius: 160px 160px 0 0; padding: 32px 14px 0; }
+      .archBody{ padding: 0 14px 50px; }
+      .floralImg--bl{ width:min(95vw, 400px); }
+      .floralImg--br{ width:min(90vw, 380px); }
+      .floralImg--tl{ width:min(90vw, 380px); }
+      .floralImg--tr{ width:min(90vw, 380px); }
     }
 
     /* Hero */
@@ -67,8 +231,8 @@
       margin-top: 14px;
       border-radius: var(--radius);
       overflow:hidden;
-      border: 1px solid var(--line2);
-      box-shadow: var(--shadow);
+      border: 1px solid rgba(180,160,140,.15);
+      box-shadow: 0 8px 25px rgba(0,0,0,.06);
       background:#ddd;
     }
     .hero img{
@@ -89,31 +253,34 @@
     }
     .divider .hr{ height:1px; background: var(--line); flex:1; max-width: 220px; }
     .divider .star{ width:18px;height:18px; opacity:.65; display:grid; place-items:center; }
-    .divider .star svg{ width:18px;height:18px; display:block; }
+    .divider .star svg{ width:18px;height:18px; display:block; color:var(--rosegold); }
 
     .hScript{
-      font-family: Allura, cursive;
-      font-size: 46px;
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: 40px;
       text-align:center;
       margin: 0;
-      color: rgba(0,0,0,.60);
+      color: rgba(58,46,40,.55);
       line-height: 1;
+      letter-spacing: 0.02em;
     }
     .sub{
       text-align:center;
       font-family:"Cormorant Garamond", serif;
       font-size: 16px;
-      color: rgba(0,0,0,.55);
+      color: rgba(58,46,40,.48);
       margin: 6px 0 0;
     }
 
     /* Calendar */
     .calendar{
       margin-top: 14px;
-      border: 1px solid var(--line2);
+      border: 1px solid rgba(184,144,122,.12);
       border-radius: 12px;
       padding: 12px;
-      background: rgba(255,255,255,.22);
+      background: rgba(255,255,255,.35);
     }
     .dow{
       display:grid;
@@ -124,7 +291,7 @@
       font-size: 11px;
       letter-spacing:.12em;
       text-transform:uppercase;
-      color: rgba(0,0,0,.42);
+      color: rgba(58,46,40,.40);
       margin-bottom: 8px;
     }
     .days{
@@ -137,18 +304,18 @@
       display:grid;
       place-items:center;
       border-radius: 10px;
-      border: 1px solid rgba(0,0,0,.08);
-      background: rgba(255,255,255,.18);
+      border: 1px solid rgba(58,46,40,.06);
+      background: rgba(255,255,255,.3);
       font-family:"Cormorant Garamond", serif;
       font-size: 18px;
-      color: rgba(0,0,0,.62);
+      color: rgba(58,46,40,.58);
       user-select:none;
     }
     .day.empty{ background:transparent; border: 1px solid transparent; }
     .day.selected{
-      background: var(--accentSoft);
-      border: 1px solid rgba(27,43,74,.25);
-      color: rgba(27,43,74,.85);
+      background: rgba(184,144,122,.12);
+      border: 1px solid rgba(184,144,122,.3);
+      color: rgba(140,107,86,.9);
       position:relative;
     }
     .day.selected::after{
@@ -156,7 +323,7 @@
       position:absolute;
       inset:-2px;
       border-radius: 12px;
-      border: 1px solid rgba(27,43,74,.35);
+      border: 1px solid rgba(184,144,122,.4);
       pointer-events:none;
     }
 
@@ -168,9 +335,9 @@
       gap: 12px;
     }
     .countBox{
-      border: 1px solid var(--line2);
+      border: 1px solid rgba(184,144,122,.12);
       border-radius: 12px;
-      background: rgba(255,255,255,.20);
+      background: rgba(255,255,255,.35);
       padding: 16px 12px;
       text-align:center;
     }
@@ -179,7 +346,7 @@
       font-family:"Cormorant Garamond", serif;
       font-size: 46px;
       line-height: 1;
-      color: rgba(0,0,0,.62);
+      color: rgba(58,46,40,.58);
     }
     .countLbl{
       margin:0;
@@ -187,7 +354,7 @@
       letter-spacing:.22em;
       text-transform:uppercase;
       font-size: 12px;
-      color: rgba(0,0,0,.42);
+      color: rgba(58,46,40,.40);
     }
 
     /* ===== AGENDA (FIXED LAYOUT) ===== */
@@ -206,7 +373,7 @@
       top: 0;
       bottom: 0;
       width: 2px;
-      background: rgba(0,0,0,.12);
+      background: rgba(184,144,122,.25);
     }
 
     .agendaItem{
@@ -223,12 +390,12 @@
       width: 38px;
       height: 38px;
       border-radius: 999px;
-      border: 2px solid var(--bg);
+      border: 2px solid var(--paper);
       background: rgba(255,255,255,.95);
       display:grid;
       place-items:center;
-      color: var(--accent);
-      box-shadow: 0 0 0 2px rgba(0,0,0,.10);
+      color: var(--rosegold);
+      box-shadow: 0 0 0 2px rgba(184,144,122,.2);
       flex-shrink: 0;
       z-index: 2;
     }
@@ -249,7 +416,7 @@
       justify-content:center;
       padding: 8px 12px;
       border-radius: 8px;
-      background: var(--accent);
+      background: linear-gradient(135deg, var(--rosegold), var(--accent));
       color: rgba(255,255,255,.95);
       font-size: 13px;
       font-weight: 500;
@@ -263,15 +430,16 @@
       font-family:"Cormorant Garamond", serif;
       font-size: 20px;
       font-weight: 500;
-      color: rgba(0,0,0,.75);
+      color: rgba(58,46,40,.72);
       margin:0;
       line-height:1.1;
     }
     .aDesc{
       margin:8px 0 0;
-      font-size: 13px;
-      color: rgba(0,0,0,.55);
-      line-height: 1.4;
+      font-family:"Cormorant Garamond", serif;
+      font-size: 15px;
+      color: rgba(58,46,40,.50);
+      line-height: 1.5;
       padding-left: 0;
     }
 
@@ -283,12 +451,12 @@
       gap: 12px;
     }
     .iconLink{
-      border: 1px solid var(--line2);
+      border: 1px solid rgba(184,144,122,.15);
       border-radius: 12px;
-      background: rgba(255,255,255,.20);
+      background: rgba(255,255,255,.35);
       padding: 14px 12px;
       text-decoration:none;
-      color: rgba(0,0,0,.66);
+      color: rgba(58,46,40,.62);
       display:flex;
       flex-direction:column;
       align-items:center;
@@ -305,7 +473,7 @@
     .clickHere{
       margin:0;
       font-size: 12px;
-      color: rgba(0,0,0,.50);
+      color: rgba(58,46,40,.45);
       text-decoration: underline;
     }
 
@@ -334,18 +502,19 @@
     .confirmSection{ margin-top: 20px; }
     .confirmBlock{
       margin-top: 12px;
-      border: 1px solid var(--line2);
+      border: 1px solid rgba(184,144,122,.12);
       border-radius: 18px;
       padding: 24px 20px 28px;
-      background: rgba(255,255,255,.32);
+      background: rgba(255,255,255,.35);
       text-align:center;
-      box-shadow: 0 16px 40px rgba(0,0,0,.08);
+      box-shadow: 0 16px 40px rgba(0,0,0,.05);
     }
     .confirmText{
       margin:0 0 18px;
+      font-family:"Cormorant Garamond", serif;
       font-size: 15px;
       line-height:1.5;
-      color: rgba(0,0,0,.62);
+      color: rgba(58,46,40,.55);
     }
 
     /* Details cards */
@@ -356,24 +525,34 @@
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     }
     .detailCard{
-      border: 1px solid var(--line2);
+      border: 1px solid rgba(184,144,122,.12);
       border-radius: 16px;
       padding: 18px 16px;
-      background: rgba(255,255,255,.24);
-      box-shadow: 0 8px 26px rgba(0,0,0,.06);
+      background: rgba(255,255,255,.35);
+      box-shadow: 0 8px 26px rgba(0,0,0,.04);
     }
     .detailTitle{
       margin:0 0 8px;
       font-family:"Cormorant Garamond", serif;
       font-size: 20px;
-      color: rgba(0,0,0,.75);
+      color: rgba(58,46,40,.72);
       letter-spacing:.02em;
     }
     .detailText{
       margin:0;
-      font-size: 14px;
-      line-height:1.45;
-      color: rgba(0,0,0,.58);
+      font-family:"Cormorant Garamond", serif;
+      font-size: 15px;
+      line-height:1.5;
+      color: rgba(58,46,40,.55);
+    }
+    .photoLink{
+      color: var(--rosegold);
+      font-weight: 600;
+      text-decoration: underline;
+    }
+    .photoLink:focus,
+    .photoLink:hover{
+      color: #8c6b56;
     }
     .detailAccent{ color: var(--accent); font-weight: 600; }
 
@@ -382,9 +561,10 @@
       margin: 14px auto 0;
       max-width: 620px;
       text-align:center;
-      color: rgba(0,0,0,.55);
-      font-size: 14px;
-      line-height:1.5;
+      font-family:"Cormorant Garamond", serif;
+      color: rgba(58,46,40,.50);
+      font-size: 15px;
+      line-height:1.6;
     }
     .iban{
       margin-top: 10px;
@@ -394,21 +574,22 @@
       letter-spacing: .02em;
       padding: 10px 12px;
       border-radius: 12px;
-      border: 1px solid var(--line2);
-      background: rgba(255,255,255,.22);
-      color: rgba(0,0,0,.66);
+      border: 1px solid rgba(184,144,122,.12);
+      background: rgba(255,255,255,.35);
+      color: rgba(58,46,40,.62);
     }
     .copyBtn{
       margin-top: 10px;
       display:inline-flex;
       align-items:center;
       gap:10px;
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.18);
+      border: 1px solid rgba(184,144,122,.2);
+      background: rgba(255,255,255,.3);
       padding: 10px 12px;
       border-radius: 999px;
       cursor:pointer;
-      color: rgba(0,0,0,.62);
+      font-family:"Cormorant Garamond", serif;
+      color: rgba(58,46,40,.58);
       user-select:none;
     }
     .copyBtn:active{ transform: translateY(1px); }
@@ -495,14 +676,14 @@
       left: 50%;
       bottom: 24px;
       transform: translateX(-50%);
-      border: 1px solid rgba(0,0,0,.12);
-      background: rgba(242,239,231,.88);
+      border: 1px solid rgba(58,46,40,.10);
+      background: rgba(240,221,214,.88);
       backdrop-filter: blur(8px);
       border-radius: 999px;
       padding: 12px 20px;
       font-size: 15px;
       font-weight: 500;
-      color: rgba(0,0,0,.70);
+      color: rgba(58,46,40,.65);
       display:inline-flex;
       gap:10px;
       align-items:center;
@@ -514,28 +695,17 @@
     }
     .pulse{
       width:8px;height:8px;border-radius:99px;
-      background: rgba(180, 30, 50, 0.85);
-      box-shadow: 0 0 0 0 rgba(180, 30, 50, 0.45);
+      background: rgba(184,144,122,.85);
+      box-shadow: 0 0 0 0 rgba(184,144,122,.45);
       animation:pulse 1.5s infinite;
     }
     @keyframes pulse{
-      0%{ box-shadow:0 0 0 0 rgba(180, 30, 50, 0.45); }
-      70%{ box-shadow:0 0 0 18px rgba(180, 30, 50, 0); }
-      100%{ box-shadow:0 0 0 0 rgba(180, 30, 50, 0); }
+      0%{ box-shadow:0 0 0 0 rgba(184,144,122,.45); }
+      70%{ box-shadow:0 0 0 18px rgba(184,144,122,0); }
+      100%{ box-shadow:0 0 0 0 rgba(184,144,122,0); }
     }
 
     .intro.opening .tapHint{ opacity:0; }
-
-    .easterHint{
-      position:absolute;
-      left: 16px;
-      bottom: 18px;
-      font-size: 10px;
-      letter-spacing:.08em;
-      text-transform: uppercase;
-      color: rgba(0,0,0,.35);
-      opacity:.8;
-    }
 
     @media (max-width: 640px){
       .intro{ padding: 8px; }
@@ -569,28 +739,35 @@
 
   <!-- MAIN -->
   <div class="wrap" id="wrap">
+  <div class="pageOuter">
 
-    <span class="easterHint">* trova l'easter egg</span>
+    <!-- Floral images outside the arch -->
+    <img class="floralImg floralImg--bl" src="assets/foto-basso-sx.png" alt="" aria-hidden="true">
+    <img class="floralImg floralImg--br" src="assets/foto-basso-dx.png" alt="" aria-hidden="true">
+    <img class="floralImg floralImg--tl" src="assets/fiori-alto-sx.png" alt="" aria-hidden="true">
+    <img class="floralImg floralImg--tr" src="assets/fiori-alto-dx.png" alt="" aria-hidden="true">
+
+    <div class="archWrap">
+
+    <!-- ARCH top (rounded) -->
+    <div class="arch">
 
     <div class="titleBlock">
-      <p class="names">Davide &amp; Alessandra</p>
-      <p class="tagline">Vieni per il nostro amore,<br>resta per la torta!</p>
+      <div class="titleInner">
+        <img class="titlePhoto" src="assets/immagine_intestazione.png" alt="Davide e Alessandra" onerror="this.style.display='none'">
+        <p class="names">Davide<br><span style="font-size:.55em;font-style:italic;font-weight:300;opacity:.7">&amp;</span> Alessandra</p>
+      </div>
+      <p class="tagline">Vieni per il nostro amore, resta per accompagnarci in questo giorno magico.</p>
     </div>
 
     <div class="hero">
       <img src="assets/hero.jpg" alt="Location" onerror="this.style.display='none'">
     </div>
 
-    <!-- divider -->
-    <div class="divider">
-      <div class="hr"></div>
-      <div class="star">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" style="color:rgba(0,0,0,.55)">
-          <path d="M12 2l1.2 6.1L19 12l-5.8 1.9L12 20l-1.2-6.1L5 12l5.8-3.9L12 2z"></path>
-        </svg>
-      </div>
-      <div class="hr"></div>
-    </div>
+    </div><!-- /.arch -->
+
+    <!-- ARCH BODY (continues below, no rounded top) -->
+    <div class="archBody">
 
     <!-- Calendar -->
     <section>
@@ -607,7 +784,7 @@
     <div class="divider">
       <div class="hr"></div>
       <div class="star">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" style="color:rgba(0,0,0,.55)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 2l1.2 6.1L19 12l-5.8 1.9L12 20l-1.2-6.1L5 12l5.8-3.9L12 2z"></path>
         </svg>
       </div>
@@ -630,7 +807,7 @@
     <div class="divider">
       <div class="hr"></div>
       <div class="star">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" style="color:rgba(0,0,0,.55)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 2l1.2 6.1L19 12l-5.8 1.9L12 20l-1.2-6.1L5 12l5.8-3.9L12 2z"></path>
         </svg>
       </div>
@@ -650,7 +827,7 @@
     <div class="divider">
       <div class="hr"></div>
       <div class="star">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" style="color:rgba(0,0,0,.55)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 2l1.2 6.1L19 12l-5.8 1.9L12 20l-1.2-6.1L5 12l5.8-3.9L12 2z"></path>
         </svg>
       </div>
@@ -690,7 +867,7 @@
     <div class="divider">
       <div class="hr"></div>
       <div class="star">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" style="color:rgba(0,0,0,.55)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 2l1.2 6.1L19 12l-5.8 1.9L12 20l-1.2-6.1L5 12l5.8-3.9L12 2z"></path>
         </svg>
       </div>
@@ -701,7 +878,7 @@
     <section class="confirmSection">
       <p class="hScript">Ci sarai anche tu?</p>
       <div class="confirmBlock">
-        <p class="confirmText">Ricordaci la tua presenza così possiamo preparare un posto speciale per te.</p>
+        <p class="confirmText">Assicuraci della tua presenza così possiamo preparare un posto speciale per te.</p>
         <a class="rsvpBtn" id="rsvpBtn" href="#" target="_blank" rel="noopener">Conferma Presenza</a>
       </div>
     </section>
@@ -709,7 +886,7 @@
     <div class="divider">
       <div class="hr"></div>
       <div class="star">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" style="color:rgba(0,0,0,.55)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 2l1.2 6.1L19 12l-5.8 1.9L12 20l-1.2-6.1L5 12l5.8-3.9L12 2z"></path>
         </svg>
       </div>
@@ -728,7 +905,7 @@
         </div>
         <div class="detailCard">
           <p class="detailTitle">Foto</p>
-          <p class="detailText">Condividi i tuoi scatti con <span class="detailAccent">@davide.delfranco</span> e <span class="detailAccent">@alessandra_riccardo</span>, non vediamo l'ora di guardarli.</p>
+          <p class="detailText">Carica e scarica i tuoi scatti nella nostra <a id="photoCloudLink" class="photoLink" href="#" target="_blank" rel="noopener">cartella foto condivisa</a> per condividere con noi i momenti speciali e custodirli nel nostro album digitale.</p>
         </div>
       </div>
     </section>
@@ -736,7 +913,7 @@
     <div class="divider">
       <div class="hr"></div>
       <div class="star">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" style="color:rgba(0,0,0,.55)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 2l1.2 6.1L19 12l-5.8 1.9L12 20l-1.2-6.1L5 12l5.8-3.9L12 2z"></path>
         </svg>
       </div>
@@ -750,12 +927,23 @@
 
       <div class="giftText">
         Se desideri farci un pensiero, ci aiuterai a costruire ricordi e progetti per il nostro futuro.
-        <div class="iban" id="ibanText">IT00X0000000000000000000000</div>
+        <div class="iban" id="ibanText">IT31B0100574790000000013399</div>
+        <div style="margin-top:6px;font-size:13px;color:rgba(58,46,40,.45);font-style:italic;">Intestato a Davide Del Franco</div>
         <div><button class="copyBtn" id="copyIbanBtn" type="button">📋 Copia IBAN</button></div>
       </div>
     </section>
 
-  </div>
+    <span class="easterHint">
+      Tocca il punto 3 volte
+      <span class="hintTarget">
+        <span class="hintDot" id="hintDot" role="button" tabindex="0" aria-label="Premi tre volte"></span>
+      </span>
+    </span>
+
+    </div><!-- /.archBody -->
+    </div><!-- /.archWrap -->
+  </div><!-- /.pageOuter -->
+  </div><!-- /.wrap -->
 
   <script>
     const CONFIG = {
@@ -767,15 +955,13 @@
       churchMaps: "https://maps.app.goo.gl/AZcMMv1gs4DUiPhw9",
       venueMaps:  "https://maps.app.goo.gl/WRKFtLNrFsuk8q9r7",
       rsvpLink:   "https://docs.google.com/forms/d/e/1FAIpQLSfS4_A3zoRaQdCwYbfBElDXoZJKDoBmDhy7ML3eWmzFomGSnA/viewform?pli=1&pli=1",
+      photoCloudLink: "https://photos.app.goo.gl/9NFt9ZhkfqJMahqx7",
 
-      iban: "IT00X0000000000000000000000",
+      iban: "IT31B0100574790000000013399",
 
       agenda: [
-        { time:"11:00", title:"Cerimonia", desc:"Chiesa", icon:"church" },
-        { time:"13:30", title:"Aperitivo di benvenuto", desc:"Arrivo in location", icon:"drink" },
-        { time:"14:30", title:"Buffet", desc:"Sapori e brindisi", icon:"cutlery" },
-        { time:"16:00", title:"Pranzo in sala", desc:"Inizia la festa", icon:"cutlery" },
-        { time:"19:00", title:"Taglio torta nuziale", desc:"e buffet di dolci", icon:"cake" },
+        { time:"11:00", title:"Chiesa", desc:"Ci diciamo sì in una cerimonia piena di emozioni.", icon:"church" },
+        { time:"14:00", title:"Location", desc:"Festeggiamo tra sorrisi, musica e calici nella nostra location del cuore.", icon:"drink" },
       ],
     };
 
@@ -783,6 +969,8 @@
     document.getElementById("churchLink").href = CONFIG.churchMaps;
     document.getElementById("venueLink").href  = CONFIG.venueMaps;
     document.getElementById("rsvpBtn").href    = CONFIG.rsvpLink;
+    const photoLinkEl = document.getElementById("photoCloudLink");
+    if (photoLinkEl) photoLinkEl.href = CONFIG.photoCloudLink;
 
     // IBAN
     document.getElementById("ibanText").textContent = CONFIG.iban;
@@ -888,7 +1076,7 @@
     // Envelope open flow
     const intro = document.getElementById("intro");
     const wrap = document.getElementById("wrap");
-    const detailsTitle = document.getElementById("detailsTitle");
+    const hintDot = document.getElementById("hintDot");
     let isOpening = false;
     
     const openInvite = () => {
@@ -921,19 +1109,30 @@
       }
     });
 
-    // Easter egg: 7 taps on "Dettagli speciali"
-    let detailsTapCount = 0;
-    let detailsTimeout;
-    detailsTitle.addEventListener("click", () => {
-      detailsTapCount++;
-      clearTimeout(detailsTimeout);
-      if (detailsTapCount >= 7){
+    // Easter egg: 3 tap sul pallino della hint
+    let hintTapCount = 0;
+    let hintTimeout;
+    const triggerEasterEgg = () => {
+      hintTapCount++;
+      clearTimeout(hintTimeout);
+      if (hintTapCount >= 3){
         window.open("https://www.youtube.com/watch?v=1Elh5AR3G4M", "_blank", "noopener");
-        detailsTapCount = 0;
+        hintTapCount = 0;
         return;
       }
-      detailsTimeout = setTimeout(() => { detailsTapCount = 0; }, 2500);
+      hintTimeout = setTimeout(() => { hintTapCount = 0; }, 2500);
+    };
+    hintDot.addEventListener("click", (e) => {
+      e.stopPropagation();
+      triggerEasterEgg();
     });
+    hintDot.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        triggerEasterEgg();
+      }
+    });
+
   </script>
 </body>
 </html>
