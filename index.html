@@ -196,7 +196,7 @@
       font-family: Allura, cursive;
       font-size: 26px;
       margin: 18px 0 0;
-      color: rgba(58,46,40,.50);
+      color: rgba(58,46,40,.62);
       line-height: 1.2;
       white-space: normal;
       text-align: center;
@@ -262,7 +262,7 @@
       font-size: 40px;
       text-align:center;
       margin: 0;
-      color: rgba(58,46,40,.55);
+      color: rgba(58,46,40,.68);
       line-height: 1;
       letter-spacing: 0.02em;
     }
@@ -270,7 +270,7 @@
       text-align:center;
       font-family:"Cormorant Garamond", serif;
       font-size: 16px;
-      color: rgba(58,46,40,.48);
+      color: rgba(58,46,40,.58);
       margin: 6px 0 0;
     }
 
@@ -438,7 +438,7 @@
       margin:8px 0 0;
       font-family:"Cormorant Garamond", serif;
       font-size: 15px;
-      color: rgba(58,46,40,.50);
+      color: rgba(58,46,40,.62);
       line-height: 1.5;
       padding-left: 0;
     }
@@ -514,7 +514,7 @@
       font-family:"Cormorant Garamond", serif;
       font-size: 15px;
       line-height:1.5;
-      color: rgba(58,46,40,.55);
+      color: rgba(58,46,40,.65);
     }
 
     /* Details cards */
@@ -543,7 +543,7 @@
       font-family:"Cormorant Garamond", serif;
       font-size: 15px;
       line-height:1.5;
-      color: rgba(58,46,40,.55);
+      color: rgba(58,46,40,.65);
     }
     .photoLink{
       color: var(--rosegold);
@@ -562,7 +562,7 @@
       max-width: 620px;
       text-align:center;
       font-family:"Cormorant Garamond", serif;
-      color: rgba(58,46,40,.50);
+      color: rgba(58,46,40,.62);
       font-size: 15px;
       line-height:1.6;
     }
@@ -593,6 +593,147 @@
       user-select:none;
     }
     .copyBtn:active{ transform: translateY(1px); }
+
+    /* Gift link */
+    .giftLink{
+      display:inline-block;
+      font-family:"Cormorant Garamond", serif;
+      font-size: 16px;
+      color: var(--rosegold);
+      text-decoration: underline;
+      cursor: pointer;
+      transition: color .15s ease;
+    }
+    .giftLink:hover{ color: var(--accent); }
+
+    /* Gift Popup */
+    .giftPopup{
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: rgba(0,0,0,.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity .3s ease, visibility .3s ease;
+    }
+    .giftPopup.active{
+      opacity: 1;
+      visibility: visible;
+    }
+    .giftPopupContent{
+      position: relative;
+      background: url('assets/paper-texture.png') repeat;
+      background-size: 512px 512px;
+      background-color: var(--paper);
+      border-radius: 18px;
+      padding: 40px 30px 30px;
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,.25);
+      transform: scale(0.9);
+      transition: transform .3s ease;
+    }
+    .giftPopup.active .giftPopupContent{
+      transform: scale(1);
+    }
+    .giftPopupClose{
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 32px;
+      height: 32px;
+      border: 1px solid rgba(184,144,122,.2);
+      border-radius: 999px;
+      background: rgba(255,255,255,.5);
+      font-size: 22px;
+      line-height: 1;
+      color: rgba(58,46,40,.6);
+      cursor: pointer;
+      transition: background .15s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+    .giftPopupClose:hover{
+      background: rgba(255,255,255,.8);
+    }
+    .giftPopupTitle{
+      margin: 0 0 20px;
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: 28px;
+      color: rgba(58,46,40,.68);
+    }
+
+    /* Form Modal */
+    .formModal{
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(0,0,0,.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity .3s ease, visibility .3s ease;
+    }
+    .formModal.active{
+      opacity: 1;
+      visibility: visible;
+    }
+    .formModalContent{
+      position: relative;
+      background: #fff;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 640px;
+      height: 85vh;
+      max-height: 700px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,.3);
+      transform: scale(0.9) translateY(20px);
+      transition: transform .3s ease;
+    }
+    .formModal.active .formModalContent{
+      transform: scale(1) translateY(0);
+    }
+    .formModalClose{
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 36px;
+      height: 36px;
+      border: none;
+      border-radius: 999px;
+      background: rgba(58,46,40,.08);
+      font-size: 24px;
+      line-height: 1;
+      color: rgba(58,46,40,.7);
+      cursor: pointer;
+      transition: background .15s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      z-index: 10;
+    }
+    .formModalClose:hover{
+      background: rgba(58,46,40,.15);
+    }
+    .formModalIframe{
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
 
     /* ===== INTRO (REALISTIC: only envelope + bottom hint) ===== */
     .intro{
@@ -879,7 +1020,7 @@
       <p class="hScript">Ci sarai anche tu?</p>
       <div class="confirmBlock">
         <p class="confirmText">Assicuraci della tua presenza così possiamo preparare un posto speciale per te.</p>
-        <a class="rsvpBtn" id="rsvpBtn" href="#" target="_blank" rel="noopener">Conferma Presenza</a>
+        <button class="rsvpBtn" id="rsvpBtn" type="button">Conferma Presenza</button>
       </div>
     </section>
 
@@ -905,7 +1046,7 @@
         </div>
         <div class="detailCard">
           <p class="detailTitle">Foto</p>
-          <p class="detailText">Carica e scarica i tuoi scatti nella nostra <a id="photoCloudLink" class="photoLink" href="#" target="_blank" rel="noopener">cartella foto condivisa</a> per condividere con noi i momenti speciali e custodirli nel nostro album digitale.</p>
+          <p class="detailText">Carica e scarica i tuoi scatti nella nostra <a id="photoCloudLink" class="photoLink" href="#" target="_blank" rel="noopener" style="font-size: 17px; text-transform: uppercase; letter-spacing: 0.03em;">Cartella Foto Condivisa</a> per condividere con noi i momenti speciali e custodirli nel nostro album digitale.</p>
         </div>
       </div>
     </section>
@@ -922,14 +1063,14 @@
 
     <!-- Gift -->
     <section>
-      <p class="hScript">Regalo</p>
-      <p class="sub">Il regalo più bello è avervi con noi</p>
+      <p class="hScript">Gift</p>
+      <p class="sub">Casa? Fatto. Arredamento? Fatto. Luna di miele? Work in progress!</p>
 
       <div class="giftText">
-        Se desideri farci un pensiero, ci aiuterai a costruire ricordi e progetti per il nostro futuro.
-        <div class="iban" id="ibanText">IT31B0100574790000000013399</div>
-        <div style="margin-top:6px;font-size:13px;color:rgba(58,46,40,.45);font-style:italic;">Intestato a Davide Del Franco</div>
-        <div><button class="copyBtn" id="copyIbanBtn" type="button">📋 Copia IBAN</button></div>
+        
+        <div style="margin-top: 16px;">
+          <a href="#" id="openGiftPopup" class="giftLink">Clicca qui</a>
+        </div>
       </div>
     </section>
 
@@ -944,6 +1085,26 @@
     </div><!-- /.archWrap -->
   </div><!-- /.pageOuter -->
   </div><!-- /.wrap -->
+
+  <!-- Gift Popup (outside wrap for proper fixed positioning) -->
+  <div class="giftPopup" id="giftPopup">
+    <div class="giftPopupContent">
+      <button class="giftPopupClose" id="closeGiftPopup" type="button" aria-label="Chiudi">×</button>
+      <img src="assets/money-rain.gif" alt="" style="width: 200px; height: auto; border-radius: 12px; margin-bottom: 16px;">
+      <p class="giftPopupTitle">Coordinate Bancarie</p>
+      <div class="iban" id="ibanText">IT31B0100574790000000013399</div>
+      <div style="margin-top:10px;font-size:14px;color:rgba(58,46,40,.55);font-style:italic;">Intestato a Davide Del Franco</div>
+      <div><button class="copyBtn" id="copyIbanBtn" type="button">📋 Copia IBAN</button></div>
+    </div>
+  </div>
+
+  <!-- Form Modal (outside wrap for proper fixed positioning) -->
+  <div class="formModal" id="formModal">
+    <div class="formModalContent">
+      <button class="formModalClose" id="closeFormModal" type="button" aria-label="Chiudi">×</button>
+      <iframe class="formModalIframe" id="formIframe" src="" title="Conferma Presenza"></iframe>
+    </div>
+  </div>
 
   <script>
     const CONFIG = {
@@ -968,7 +1129,34 @@
     // Links
     document.getElementById("churchLink").href = CONFIG.churchMaps;
     document.getElementById("venueLink").href  = CONFIG.venueMaps;
-    document.getElementById("rsvpBtn").href    = CONFIG.rsvpLink;
+
+    // Form Modal
+    const formModal = document.getElementById("formModal");
+    const formIframe = document.getElementById("formIframe");
+    const rsvpBtn = document.getElementById("rsvpBtn");
+    const closeFormModalBtn = document.getElementById("closeFormModal");
+
+    rsvpBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      formIframe.src = CONFIG.rsvpLink;
+      formModal.classList.add("active");
+      document.body.style.overflow = "hidden";
+    });
+
+    closeFormModalBtn.addEventListener("click", () => {
+      formModal.classList.remove("active");
+      document.body.style.overflow = "";
+      // Clear iframe to stop any form processes
+      setTimeout(() => { formIframe.src = ""; }, 300);
+    });
+
+    formModal.addEventListener("click", (e) => {
+      if (e.target === formModal) {
+        formModal.classList.remove("active");
+        document.body.style.overflow = "";
+        setTimeout(() => { formIframe.src = ""; }, 300);
+      }
+    });
     const photoLinkEl = document.getElementById("photoCloudLink");
     if (photoLinkEl) photoLinkEl.href = CONFIG.photoCloudLink;
 
@@ -1130,6 +1318,29 @@
       if (e.key === "Enter" || e.key === " ") {
         e.preventDefault();
         triggerEasterEgg();
+      }
+    });
+
+    // Gift Popup
+    const giftPopup = document.getElementById("giftPopup");
+    const openGiftPopupBtn = document.getElementById("openGiftPopup");
+    const closeGiftPopupBtn = document.getElementById("closeGiftPopup");
+
+    openGiftPopupBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      giftPopup.classList.add("active");
+      document.body.style.overflow = "hidden";
+    });
+
+    closeGiftPopupBtn.addEventListener("click", () => {
+      giftPopup.classList.remove("active");
+      document.body.style.overflow = "";
+    });
+
+    giftPopup.addEventListener("click", (e) => {
+      if (e.target === giftPopup) {
+        giftPopup.classList.remove("active");
+        document.body.style.overflow = "";
       }
     });
 
